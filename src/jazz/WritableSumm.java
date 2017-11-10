@@ -3,7 +3,8 @@ package jazz;
 /**
  * Created by user on 10.11.2017.
  */
-class WritableSumm extends AbstractWritableSumm {
+class WritableSumm {
+//        extends AbstractWritableSumm {
     final String[][] str1 = {
             {"", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"},
             {"", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять"},
@@ -39,11 +40,11 @@ class WritableSumm extends AbstractWritableSumm {
     protected String getS100(int n) {
         return str100[n];
     }
-
+    // форма юнита (пол)
     protected int getUnitGender(int idx) {
         return new Integer(forms[idx][3]);
     }
-
+    // получение юнита (название триады)
     protected String getUnit(int idx, long cnt) {
         if (cnt % 100 > 4 && cnt % 100 < 21)
             return forms[idx][2];
@@ -58,7 +59,24 @@ class WritableSumm extends AbstractWritableSumm {
                 return forms[idx][2];
         }
     }
-
+    // преобразование триады в слова
+    protected String triadToString(int n, int gender, boolean acceptZero) {
+        if (!acceptZero && n == 0) return "";
+        String res = "";
+        if (n % 1000 > 99) {
+            res += getS100(n % 1000 / 100) + " ";
+        }
+        if (n % 100 > 10 && n % 100 < 20) {
+            return res + getS11(n % 10) + " ";
+        }
+        if (n % 100 > 9) {
+            res += getS10(n % 100 / 10) + " ";
+        }
+        if (res.length() == 0 || n % 10 > 0) {
+            res = res + getS1(n % 10, gender) + " ";
+        }
+        return res;
+    }
     // главный метод
     public String numberToString(Number num) {
         String res = "";
